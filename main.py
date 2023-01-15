@@ -42,16 +42,22 @@ def sending_messages(c):
 
 
 def receiving_message(c):
+    def press(command):
+        global stop_listening
+        stop_listening = True
+        pyautogui.press(command)
+        stop_listening = False
+                
     while True:
-        message = c.recv(1024).decode()
+        message = str(c.recv(1024).decode())
         if message:
             console.print(f'[blue]<SENDER>[/blue] : {message}')
-            if message == keyboard.Key.space:
-                pyautogui.press("space")
-            elif message == keyboard.Key.right:
-                pyautogui.press("right")
-            elif message == keyboard.Key.left:
-                pyautogui.press("left")
+            if message == str(keyboard.Key.space):
+                press("space")
+            elif message == str(keyboard.Key.right):
+                press("right")
+            elif message == str(keyboard.Key.left):
+                press("left")
         else:
             exit_event.set()
             console.print(f'[red]The connection has been disconnected.[/red]')
